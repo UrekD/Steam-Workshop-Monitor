@@ -26,12 +26,14 @@ async def Monitor():
     now = datetime.datetime.now()
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] Start {Style.RESET_ALL}%H:%M:%S"))
     i = 0
+    mods = config["userdata"].get('workshopid')
     for mod in mods:
         mod = mod.split('#')
         try:
             await CheckOne(mod,i)
         except:
             print(now.strftime(f"{Fore.MAGENTA}[ERROR] {Style.RESET_ALL}%H:%M:%S {mod}"))
+            await err(mod[0])    
         i = i+1
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] End {Style.RESET_ALL}%H:%M:%S"))
     async with aiofiles.open('config.json', mode='w') as jsfile:
@@ -40,6 +42,10 @@ async def Monitor():
 async def update(uid):
     channel = bot.get_channel(where)
     await channel.send(f"Mod Updated: https://steamcommunity.com/sharedfiles/filedetails/?id={uid} <@&{nrole}>")
+
+async def err(uid):
+    channel = bot.get_channel(where)
+    await channel.send(f"ERROR: https://steamcommunity.com/sharedfiles/filedetails/?id={uid} Unable to retreive!")
 
 async def CheckOne(modC,i):
     body = 'itemcount=1&publishedfileids[0]=2638049909'
@@ -92,7 +98,7 @@ class Bot(commands.Bot):
             await Monitor()
             await channel.send("Checking finished sleeping...")
             event.clear()
-            await asyncio.sleep(tcheck) 
+            await asyncio.sleep(ctime) 
 
 bot = Bot(command_prefix='$')
 
@@ -117,9 +123,7 @@ async def remove(ctx,arg):
     if ctx.channel.name == cname:
         if event.is_set() == False:
             try:
-                async with aiofiles.open('config.json', "rb") as infile:
-                    config = json.load(infile)
-                idsx = config["userdata"]['workshopid'] 
+                idsx = config["userdata"]['workshopid']               
                 idsx.remove(arg)
                 config["userdata"]['workshopid'] = idsx
                 async with aiofiles.open('config.json', mode='w') as jsfile:
@@ -139,8 +143,6 @@ async def add(ctx,arg):
     if ctx.channel.name == cname:
         if event.is_set() == False:
             try:
-                async with aiofiles.open('config.json', "rb") as infile:
-                    config = json.load(infile)
                 idsx = config["userdata"]['workshopid'] 
                 idsx.append(arg)
                 config["userdata"]['workshopid'] = idsx
