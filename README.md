@@ -29,7 +29,6 @@ python3 WorkshopMonitor.py
 #Comment out line 13 and start again
 python3 WorkshopMonitor.py
 ```
-Will relocate vars to a separate config file, then a .exe for Windows should be possible.
 # Commands
 **$ping**
 
