@@ -8,11 +8,12 @@ import aiofiles
 from nextcord.ext import commands
 
 TOKEN = 'token' # bot token
+#NUMBERS/INTS don't need to be put in ''
 where = 1234 #where to send update notification
 nrole = 1234 #role to ping on update
+ctime = 900 #check interval in seconds
 #collectionid = 1332156191 #collection ID uncoment to fill, after it fills comment it again and restart!
 cname = 'workshop' #channel name where you can use commands $list $remove $add
-ctime = 900 #check interval in seconds
 with open('config.json', "rb") as infile:
     config = json.load(infile)
     mods = config["userdata"].get('workshopid')
