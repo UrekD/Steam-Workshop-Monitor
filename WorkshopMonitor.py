@@ -32,8 +32,8 @@ async def Monitor():
         mod = mod.split('#')
         try:
             await CheckOne(mod,i)
-        except:
-            print(now.strftime(f"{Fore.MAGENTA}[ERROR] {Style.RESET_ALL}%H:%M:%S {mod}"))
+        except Exception as exc:
+            print(now.strftime(f"{Fore.MAGENTA}[ERROR] {Style.RESET_ALL}%H:%M:%S {mod}, {exc}"))
             await err(mod[0])    
         i = i+1
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] End {Style.RESET_ALL}%H:%M:%S"))
@@ -49,6 +49,7 @@ async def err(uid):
     await channel.send(f"ERROR: https://steamcommunity.com/sharedfiles/filedetails/?id={uid} Unable to retreive!")
 
 async def CheckOne(modC,i):
+    asyncio. sleep(1) 
     body = 'itemcount=1&publishedfileids[0]=2638049909'
     url = 'https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/'
     myobj = {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'itemcount' : 1, 'publishedfileids[0]':modC[0] }
