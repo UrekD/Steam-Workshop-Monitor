@@ -111,7 +111,7 @@ async def ping(ctx):
 @bot.command()
 async def list(ctx):
     if ctx.channel.name == cname:
-       if event.is_set() == False:
+       if event.is_set() is False:
             with open('config.json', "rb") as infile:
                 config = json.load(infile)
                 mods = config["userdata"].get('workshopid')
@@ -123,7 +123,7 @@ async def list(ctx):
 @bot.command()
 async def remove(ctx,arg):
     if ctx.channel.name == cname:
-        if event.is_set() == False:
+        if event.is_set() is False:
             try:
                 idsx = config["userdata"]['workshopid']               
                 idsx.remove(arg)
@@ -143,7 +143,7 @@ async def on_ready():
 @bot.command()
 async def add(ctx,arg):
     if ctx.channel.name == cname:
-        if event.is_set() == False:
+        if event.is_set() is False:
             try:
                 idsx = config["userdata"]['workshopid'] 
                 idsx.append(arg)
