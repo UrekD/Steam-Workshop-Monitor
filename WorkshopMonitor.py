@@ -1,6 +1,6 @@
 #Source https://github.com/UrekD/Steam-Workshop-Monitor
 import asyncio
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 import datetime
 import json
 import httpx
