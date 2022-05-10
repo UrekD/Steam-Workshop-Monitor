@@ -118,7 +118,7 @@ async def list(ctx):
             await ctx.send(mods)
        else:
             await ctx.send("Wait untill update check finishes!")
-            
+
 
 @bot.command()
 async def remove(ctx,arg):
@@ -155,12 +155,12 @@ async def add(ctx,arg):
                 await ctx.send(f"Error has accured {exc}")
         else:
             await ctx.send("Wait untill update check finishes!")
-            
+
 try:
     print("Filling config")
     CollectionToConfig(collectionid)
     print("Finished")
 except:
     print("No collection id did not refill")
-    
+
 bot.run(TOKEN)
