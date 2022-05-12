@@ -29,6 +29,32 @@ python3 WorkshopMonitor.py
 #Comment out l5 in .env
 python3 WorkshopMonitor.py
 ```
+**Docker Compose**
+
+If collectionid var is present it overwrites the config, so run it then comment it out!
+After mounting the volume you can also edit it manually with a text editor on the machine.
+```docker
+version: "3"
+services:
+  workshopmonitor:
+    image: ghcr.io/urekd/steam-workshop-monitor:main
+    environment:
+      - TOKEN=fmSUjZKW.To)v<eDw_8VZG<Pik#yN #bot token
+      - where=935678087209856 #channel ID to send notification
+      - nrole=9124604480608221 #role id to ping on notify
+      - ctime=900 #time between checks in seconds
+      - cname=workshop #channel name where it responds to commands
+      - collectionid=1332156191 #workshop collection id found in url
+      - cdelay=0 #delay between each mods checked in seconds
+    volumes:
+      - botdataa:/data
+      
+volumes:
+  botdataa:
+```
+volumes:
+  botdataa:
+
 # Commands
 **$ping**
 
