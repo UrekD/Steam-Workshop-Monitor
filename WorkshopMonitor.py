@@ -27,7 +27,7 @@ async def Monitor():
     now = datetime.datetime.now()
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] Start {Style.RESET_ALL}%H:%M:%S"))
     i = 0
-    with open('config.json', "rb") as infile:
+    with open('data/config.json', "rb") as infile:
         configx = json.load(infile)
         mods = configx["userdata"].get('workshopid')
         global oup
@@ -43,7 +43,7 @@ async def Monitor():
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] End {Style.RESET_ALL}%H:%M:%S"))
     if oup is True:
         print(oup)
-        async with aiofiles.open('config.json', mode='w') as jsfile:
+        async with aiofiles.open('data/config.json', mode='w') as jsfile:
             await jsfile.write(json.dumps(config))
 
 async def update(uid):
@@ -85,7 +85,7 @@ def CollectionToConfig(id):
             temp = item['publishedfileid']
             ids.append(f"{temp}#000")
         config["userdata"]['workshopid'] = ids
-        with open('config.json', "w") as jsfile:
+        with open('data/config.json', "w") as jsfile:
             json.dump(config, jsfile)
             jsfile.close()
     except Exception as exc:
@@ -120,7 +120,7 @@ async def ping(ctx):
 async def list(ctx):
     if ctx.channel.name == cname:
        if event.is_set() is False:
-            with open('config.json', "rb") as infile:
+            with open('data/config.json', "rb") as infile:
                 config = json.load(infile)
                 mods = config["userdata"].get('workshopid')
             await ctx.send(mods)
@@ -136,7 +136,7 @@ async def remove(ctx,arg):
                 idsx = config["userdata"]['workshopid']               
                 idsx.remove(arg)
                 config["userdata"]['workshopid'] = idsx
-                async with aiofiles.open('config.json', mode='w') as jsfile:
+                async with aiofiles.open('data/config.json', mode='w') as jsfile:
                     await jsfile.write(json.dumps(config))
                 await ctx.send(f"Removed element {arg}")
             except Exception as exc:
@@ -156,7 +156,7 @@ async def add(ctx,arg):
                 idsx = config["userdata"]['workshopid'] 
                 idsx.append(arg)
                 config["userdata"]['workshopid'] = idsx
-                async with aiofiles.open('config.json', mode='w') as jsfile:
+                async with aiofiles.open('data/config.json', mode='w') as jsfile:
                     await jsfile.write(json.dumps(config))
                 await ctx.send(f"Added element {arg}")
             except Exception as exc:
@@ -164,7 +164,7 @@ async def add(ctx,arg):
         else:
             await ctx.send("Wait untill update check finishes!")
 
-with open('config.json', "rb") as infile:
+with open('data/config.json', "rb") as infile:
     config = json.load(infile)
     mods = config["userdata"].get('workshopid')
 
