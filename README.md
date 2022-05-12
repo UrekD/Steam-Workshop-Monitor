@@ -12,10 +12,10 @@ Discord bot to monitor collection of mods on the Steam Workshop and notify on up
 git clone https://github.com/UrekD/Steam-Workshop-Monitor/
 cd Steam-Workshop-Monitor/
 pip3 install -r requirements.txt
-#Change vars on lines 10-15 of WorkshopMonitor.py
+#Edit info in .env
 python3 WorkshopMonitor.py
 #Wait till config fills then ctrl+c
-#Comment out line 13 and start again
+#Comment out l5 in .env
 python3 WorkshopMonitor.py
 ```
 **Windows**
@@ -23,10 +23,10 @@ python3 WorkshopMonitor.py
 Downloadn the repo and extract to an empty folder
 Open a CLI ex. CMD,PS,GitBash in the directory
 pip3 install -r requirements.txt
-#Change vars on lines 10-15 of WorkshopMonitor.py
+#Edit info in .env
 python3 WorkshopMonitor.py
 #Wait till config fills then ctrl+c
-#Comment out line 13 and start again
+#Comment out l5 in .env
 python3 WorkshopMonitor.py
 ```
 # Commands

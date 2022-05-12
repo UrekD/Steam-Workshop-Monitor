@@ -5,20 +5,20 @@ import datetime
 import json
 import httpx
 import aiofiles
+import os
 from nextcord.ext import commands
+from dotenv import load_dotenv
 
-TOKEN = 'token' # bot token
-#NUMBERS/INTS don't need to be put in ''
-where = 1234 #where to send update notification
-nrole = 1234 #role to ping on update
-ctime = 900 #check interval in seconds
-#collectionid = 1332156191 #collection ID uncoment to fill, after it fills comment it again and restart!
-cname = 'workshop' #channel name where you can use commands $list $remove $add
-with open('config.json', "rb") as infile:
-    config = json.load(infile)
-    mods = config["userdata"].get('workshopid')
+load_dotenv()
 
-
+TOKEN = os.getenv('TOKEN')
+where = int(os.getenv('where')) 
+nrole = int(os.getenv('nrole'))
+ctime = int(os.getenv('ctime'))
+cdelay = int(os.getenv('cdelay'))
+collectionid = os.getenv('collectionid')
+cname = os.getenv('cname') 
+oup = False
 
 event = asyncio.Event()   
 event.set()
@@ -27,7 +27,11 @@ async def Monitor():
     now = datetime.datetime.now()
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] Start {Style.RESET_ALL}%H:%M:%S"))
     i = 0
-    mods = config["userdata"].get('workshopid')
+    with open('config.json', "rb") as infile:
+        configx = json.load(infile)
+        mods = configx["userdata"].get('workshopid')
+        global oup
+        oup = False
     for mod in mods:
         mod = mod.split('#')
         try:
@@ -37,7 +41,9 @@ async def Monitor():
             await err(mod[0])    
         i = i+1
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] End {Style.RESET_ALL}%H:%M:%S"))
-    async with aiofiles.open('config.json', mode='w') as jsfile:
+    if oup is True:
+        print(oup)
+        async with aiofiles.open('config.json', mode='w') as jsfile:
             await jsfile.write(json.dumps(config))
 
 async def update(uid):
@@ -49,7 +55,7 @@ async def err(uid):
     await channel.send(f"ERROR: https://steamcommunity.com/sharedfiles/filedetails/?id={uid} Unable to retreive!")
 
 async def CheckOne(modC,i):
-    asyncio. sleep(1) 
+    await asyncio. sleep(cdelay) 
     body = 'itemcount=1&publishedfileids[0]=2638049909'
     url = 'https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/'
     myobj = {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'itemcount' : 1, 'publishedfileids[0]':modC[0] }
@@ -60,6 +66,8 @@ async def CheckOne(modC,i):
         config["userdata"].get('workshopid')[i] = f"{modC[0]}#{epoch_time}"
         sid = wdetails.json()['response']['publishedfiledetails'][0]['publishedfileid']
         now = datetime.datetime.now()
+        global oup
+        oup = True
         print(now.strftime(f"{Fore.MAGENTA}[Update] {Style.RESET_ALL}{sid} %H:%M:%S"))
         if int(modC[1])!=000:
             await update(sid)
@@ -80,8 +88,8 @@ def CollectionToConfig(id):
         with open('config.json', "w") as jsfile:
             json.dump(config, jsfile)
             jsfile.close()
-    except:
-        print("{Fore.RED}[ERROR] {Style.RESET_ALL}Collection was not parsed correctly try again!")    
+    except Exception as exc:
+        print(f"{Fore.RED}[ERROR] {Style.RESET_ALL}Collection was not parsed correctly try again! {exc}")    
 
 class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
@@ -156,11 +164,18 @@ async def add(ctx,arg):
         else:
             await ctx.send("Wait untill update check finishes!")
 
-try:
-    print("Filling config")
-    CollectionToConfig(collectionid)
-    print("Finished")
-except:
-    print("No collection id did not refill")
+with open('config.json', "rb") as infile:
+    config = json.load(infile)
+    mods = config["userdata"].get('workshopid')
+
+if collectionid != None:
+    try:
+        print(f"{Fore.MAGENTA}[Fill] Filling config")
+        CollectionToConfig(int(collectionid))
+        print(f"{Fore.MAGENTA}[Fill] Finished")
+    except:
+        print(f"{Fore.MAGENTA}[Fill] Error filling collection")
+
+
 
 bot.run(TOKEN)
