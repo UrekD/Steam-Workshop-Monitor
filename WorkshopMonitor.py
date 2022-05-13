@@ -6,6 +6,8 @@ import json
 import httpx
 import aiofiles
 import os
+import numpy as np
+import math
 from nextcord.ext import commands
 from dotenv import load_dotenv
 
@@ -36,13 +38,24 @@ async def Monitor():
         mod = mod.split('#')
         try:
             await CheckOne(mod,i)
+            now = datetime.datetime.now()
+            print(now.strftime(f"{Fore.MAGENTA}[CHECKED] {Style.RESET_ALL}%H:%M:%S {mod}"))
         except Exception as exc:
-            print(now.strftime(f"{Fore.MAGENTA}[ERROR] {Style.RESET_ALL}%H:%M:%S {mod}, {exc}"))
-            await err(mod[0])    
+            now = datetime.datetime.now()
+            print(now.strftime(f"{Fore.MAGENTA}[RECHECK] {Style.RESET_ALL}%H:%M:%S {mod}, {exc}"))
+            await asyncio. sleep(5) 
+            try:
+                await CheckOne(mod,i)
+                now = datetime.datetime.now()
+                print(now.strftime(f"{Fore.MAGENTA}[CHECKED] {Style.RESET_ALL}%H:%M:%S {mod}"))
+            except Exception as exc:
+                now = datetime.datetime.now()
+                print(now.strftime(f"{Fore.MAGENTA}[ERROR] {Style.RESET_ALL}%H:%M:%S {mod}, {exc}"))
+                await err(mod[0])
         i = i+1
+    now = datetime.datetime.now()
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] End {Style.RESET_ALL}%H:%M:%S"))
     if oup is True:
-        print(oup)
         async with aiofiles.open('data/config.json', mode='w') as jsfile:
             await jsfile.write(json.dumps(config))
 
@@ -56,7 +69,6 @@ async def err(uid):
 
 async def CheckOne(modC,i):
     await asyncio. sleep(cdelay) 
-    body = 'itemcount=1&publishedfileids[0]=2638049909'
     url = 'https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/'
     myobj = {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8', 'itemcount' : 1, 'publishedfileids[0]':modC[0] }
     async with httpx.AsyncClient() as r:
@@ -123,10 +135,12 @@ async def list(ctx):
             with open('data/config.json', "rb") as infile:
                 config = json.load(infile)
                 mods = config["userdata"].get('workshopid')
-            await ctx.send(mods)
+                c=math.ceil(len(mods)/80)
+            for mod in np.array_split(mods, c):
+                await ctx.send(mod)
+            
        else:
-            await ctx.send("Wait untill update check finishes!")
-
+            await ctx.send("Wait until update check finishes!")
 
 @bot.command()
 async def remove(ctx,arg):
@@ -142,11 +156,32 @@ async def remove(ctx,arg):
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
         else:
-            await ctx.send("Wait untill update check finishes!")        
+            await ctx.send("Wait until update check finishes!")        
 
 @bot.event
 async def on_ready():
     print(f'{Fore.MAGENTA}[INFO] {Fore.RED}{bot.user}{Style.RESET_ALL} has connected to nextcord!')
+
+@bot.command()
+@commands.check_any(commands.is_owner())
+async def say(ctx,arg):
+    channel = bot.get_channel(where)
+    await channel.send(f"{arg}")
+
+@bot.command()
+async def clear(ctx):
+    if ctx.channel.name == cname:
+        if event.is_set() is False:
+            try:
+                d = [] 
+                config["userdata"]['workshopid'] = d
+                async with aiofiles.open('data/config.json', mode='w') as jsfile:
+                    await jsfile.write(json.dumps(config))
+                await ctx.send(f"Cleared the config")
+            except Exception as exc:
+                await ctx.send(f"Error has accured {exc}")
+        else:
+            await ctx.send("Wait until update check finishes!")
 
 @bot.command()
 async def add(ctx,arg):
@@ -162,7 +197,7 @@ async def add(ctx,arg):
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
         else:
-            await ctx.send("Wait untill update check finishes!")
+            await ctx.send("Wait until update check finishes!")
 
 with open('data/config.json', "rb") as infile:
     config = json.load(infile)

@@ -45,7 +45,7 @@ services:
       - ctime=900 #time between checks in seconds
       - cname=workshop #channel name where it responds to commands
       - collectionid=1332156191 #workshop collection id found in url
-      - cdelay=0 #delay between each mods checked in seconds
+      - cdelay=1 #delay between each mods checked in seconds
     volumes:
       - botdataa:/data
       
@@ -79,6 +79,10 @@ Add the mod with the following format MODID#000 ex. "$add 450814997#000"
 If you use 000 it should not trigger a update notification.
 
 ![image](https://user-images.githubusercontent.com/38784343/140181637-731a1a32-6538-406e-8fcc-0e5eb925c143.png)
+
+**$clear**
+
+Removes all mods from the config.
 
 # Example
 
