@@ -8,6 +8,7 @@ import aiofiles
 import os
 import numpy as np
 import math
+import nextcord
 from nextcord.ext import commands
 from dotenv import load_dotenv
 
@@ -125,10 +126,26 @@ class Bot(commands.Bot):
             await asyncio.sleep(ctime) 
 
 bot = Bot(command_prefix='$')
+bot.remove_command('help')
 
 @bot.command()
 async def ping(ctx):
-    await ctx.reply('Pong!')
+    if ctx.channel.name == cname:
+        await ctx.reply('Pong!')
+
+@bot.command()
+async def help(ctx):
+    if ctx.channel.name == cname:
+        embed=nextcord.Embed(title="Steam-Workshop-Monitor Help", url="https://github.com/UrekD/Steam-Workshop-Monitor", color=0xff0000)
+        embed.set_author(name="Steam-Workshop-Monitor Help", url="https://github.com/UrekD/Steam-Workshop-Monitor", icon_url="https://icons.iconarchive.com/icons/icons8/windows-8/512/Logos-Steam-icon.png")
+        embed.set_thumbnail(url="https://icons.iconarchive.com/icons/icons8/windows-8/512/Logos-Steam-icon.png")
+        embed.add_field(name="$ping", value="Pong!", inline=False)
+        embed.add_field(name="$list", value="Lists all mods from current config.", inline=False)
+        embed.add_field(name="$remove mod#time", value="Removes specified mod from current configuration ex. $remove 1439779114#1531480087 ", inline=False)
+        embed.add_field(name="$add modid#000", value="Adds a mod to config in format modid#000, ex. $add 1439779114#000 ", inline=False)
+        embed.add_field(name="$clear", value="Removes all mods from the config.", inline=False)
+        embed.add_field(name="$refill workshopid", value="Overwrites the config with the mods in workshop collection. ex, $refill 1332156191", inline=False)
+        await ctx.send(embed=embed)
 
 @bot.command()
 async def list(ctx):
@@ -233,7 +250,5 @@ if collectionid is not None:
         print(f"{Fore.MAGENTA}[Fill] Finished")
     except:
         print(f"{Fore.MAGENTA}[Fill] Error filling collection")
-
-
 
 bot.run(TOKEN)
