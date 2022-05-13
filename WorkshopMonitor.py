@@ -138,7 +138,7 @@ async def list(ctx):
                 c=math.ceil(len(mods)/80)
             for mod in np.array_split(mods, c):
                 await ctx.send(mod)
-            
+
        else:
             await ctx.send("Wait until update check finishes!")
 
