@@ -8,7 +8,7 @@ Discord bot to monitor collection of mods on the Steam Workshop and notify on up
 - Discord bot token
 # Setup
 **Linux**
-```py
+```py 
 git clone https://github.com/UrekD/Steam-Workshop-Monitor/
 cd Steam-Workshop-Monitor/
 pip3 install -r requirements.txt
