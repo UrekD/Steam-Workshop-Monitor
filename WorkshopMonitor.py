@@ -203,7 +203,7 @@ with open('data/config.json', "rb") as infile:
     config = json.load(infile)
     mods = config["userdata"].get('workshopid')
 
-if collectionid != None:
+if collectionid is not None:
     try:
         print(f"{Fore.MAGENTA}[Fill] Filling config")
         CollectionToConfig(int(collectionid))
