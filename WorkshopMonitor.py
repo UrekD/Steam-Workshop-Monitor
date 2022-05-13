@@ -183,7 +183,7 @@ async def clear(ctx):
                 config["userdata"]['workshopid'] = d
                 async with aiofiles.open('data/config.json', mode='w') as jsfile:
                     await jsfile.write(json.dumps(config))
-                await ctx.send(f"Cleared the config")
+                await ctx.send("Cleared the config")
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
             event.clear()
@@ -215,7 +215,7 @@ async def refill(ctx,arg):
             try:
                 event.set()
                 CollectionToConfig(int(arg))
-                await ctx.send(f"Cleared and filled config with collection!")
+                await ctx.send("Cleared and filled config with collection!")
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
             event.clear()
