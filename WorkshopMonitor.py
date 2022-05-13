@@ -23,7 +23,6 @@ cname = os.getenv('cname')
 oup = False
 
 event = asyncio.Event()   
-event.set()
 
 async def Monitor():
     now = datetime.datetime.now()
@@ -115,6 +114,9 @@ class Bot(commands.Bot):
         await self.wait_until_ready()
         channel = self.get_channel(where) 
         while not self.is_closed():
+            while event.is_set():
+                await channel.send("Command is still running delaying check for 5 seconds..")
+                await asyncio.sleep(5)
             event.set()
             await channel.send("Checking for updates!")
             await Monitor()
@@ -132,13 +134,14 @@ async def ping(ctx):
 async def list(ctx):
     if ctx.channel.name == cname:
        if event.is_set() is False:
+            event.set()
             with open('data/config.json', "rb") as infile:
                 config = json.load(infile)
                 mods = config["userdata"].get('workshopid')
                 c=math.ceil(len(mods)/80)
             for mod in np.array_split(mods, c):
                 await ctx.send(mod)
-
+            event.clear()
        else:
             await ctx.send("Wait until update check finishes!")
 
@@ -147,6 +150,7 @@ async def remove(ctx,arg):
     if ctx.channel.name == cname:
         if event.is_set() is False:
             try:
+                event.set()
                 idsx = config["userdata"]['workshopid']               
                 idsx.remove(arg)
                 config["userdata"]['workshopid'] = idsx
@@ -155,6 +159,7 @@ async def remove(ctx,arg):
                 await ctx.send(f"Removed element {arg}")
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
+            event.clear()
         else:
             await ctx.send("Wait until update check finishes!")        
 
@@ -173,6 +178,7 @@ async def clear(ctx):
     if ctx.channel.name == cname:
         if event.is_set() is False:
             try:
+                event.set()
                 d = [] 
                 config["userdata"]['workshopid'] = d
                 async with aiofiles.open('data/config.json', mode='w') as jsfile:
@@ -180,6 +186,7 @@ async def clear(ctx):
                 await ctx.send(f"Cleared the config")
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
+            event.clear()
         else:
             await ctx.send("Wait until update check finishes!")
 
@@ -188,6 +195,7 @@ async def add(ctx,arg):
     if ctx.channel.name == cname:
         if event.is_set() is False:
             try:
+                event.set()
                 idsx = config["userdata"]['workshopid'] 
                 idsx.append(arg)
                 config["userdata"]['workshopid'] = idsx
@@ -196,6 +204,21 @@ async def add(ctx,arg):
                 await ctx.send(f"Added element {arg}")
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
+            event.clear()
+        else:
+            await ctx.send("Wait until update check finishes!")
+
+@bot.command()
+async def refill(ctx,arg):
+    if ctx.channel.name == cname:
+        if event.is_set() is False:
+            try:
+                event.set()
+                CollectionToConfig(int(arg))
+                await ctx.send(f"Cleared and filled config with collection!")
+            except Exception as exc:
+                await ctx.send(f"Error has accured {exc}")
+            event.clear()
         else:
             await ctx.send("Wait until update check finishes!")
 

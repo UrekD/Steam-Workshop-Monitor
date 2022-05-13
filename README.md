@@ -84,6 +84,14 @@ If you use 000 it should not trigger a update notification.
 
 Removes all mods from the config.
 
+![image](https://user-images.githubusercontent.com/38784343/168385393-bf913d4a-b755-4a8f-b0bc-7228f1c09bb6.png)
+
+**$refill**
+
+Overwrites the config with the mods in workshop collection.
+
+![image](https://user-images.githubusercontent.com/38784343/168385478-0656d059-3053-4be8-b769-4731daac4c20.png)
+
 # Example
 
 ![image](https://user-images.githubusercontent.com/38784343/140175801-4395f62c-a4bf-4de5-9f50-59e4909336a2.png)
