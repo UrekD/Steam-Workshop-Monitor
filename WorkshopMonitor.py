@@ -108,6 +108,21 @@ class Bot(commands.Bot):
         super().__init__(*args, **kwargs)
 
         # create the background task and run it in the background
+        #self.bg_task = self.loop.create_task(self.my_background_task(event))
+
+    async def on_disconnect(self):
+        now = datetime.datetime.now()
+        print(now.strftime(f"{Fore.MAGENTA}[DISCONNECTED] {Style.RESET_ALL}%H:%M:%S "))
+
+    async def on_resumed(self):
+        now = datetime.datetime.now()
+        print(now.strftime(f"{Fore.MAGENTA}[RESUME] {Style.RESET_ALL}%H:%M:%S "))
+        event.clear()
+        self.bg_task = self.loop.create_task(self.my_background_task(event))
+
+    async def on_ready(self):
+        print(f'{Fore.MAGENTA}[INFO] {Fore.RED}{bot.user}{Style.RESET_ALL} has connected to nextcord!')
+        event.clear()
         self.bg_task = self.loop.create_task(self.my_background_task(event))
 
 
@@ -120,10 +135,15 @@ class Bot(commands.Bot):
                 await asyncio.sleep(5)
             event.set()
             await channel.send("Checking for updates!")
-            await Monitor()
-            await channel.send("Checking finished sleeping...")
+            try:
+                await Monitor()
+                await channel.send("Checking finished sleeping...")
+            except:
+                now = datetime.datetime.now()
+                print(now.strftime(f"{Fore.MAGENTA}[STOP] {Style.RESET_ALL}%H:%M:%S An error has accured current monitor cycle skipped!"))
             event.clear()
             await asyncio.sleep(ctime) 
+
 
 bot = Bot(command_prefix='$')
 bot.remove_command('help')
@@ -179,10 +199,6 @@ async def remove(ctx,arg):
             event.clear()
         else:
             await ctx.send("Wait until update check finishes!")        
-
-@bot.event
-async def on_ready():
-    print(f'{Fore.MAGENTA}[INFO] {Fore.RED}{bot.user}{Style.RESET_ALL} has connected to nextcord!')
 
 @bot.command()
 @commands.check_any(commands.is_owner())
@@ -251,4 +267,4 @@ if collectionid is not None:
     except:
         print(f"{Fore.MAGENTA}[Fill] Error filling collection")
 
-bot.run(TOKEN)
+bot.run(TOKEN,reconnect=True)
