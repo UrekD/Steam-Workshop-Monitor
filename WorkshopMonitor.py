@@ -19,7 +19,11 @@ where = int(os.getenv('where'))
 nrole = int(os.getenv('nrole'))
 ctime = int(os.getenv('ctime'))
 cdelay = int(os.getenv('cdelay'))
+cretry = int(os.getenv('cretry'))
+rdelay = int(os.getenv('rdelay'))
+fdelay = int(os.getenv('fdelay'))
 collectionid = os.getenv('collectionid')
+status = os.getenv('status')
 cname = os.getenv('cname') 
 oup = False
 
@@ -43,16 +47,18 @@ async def Monitor():
         except Exception as exc:
             now = datetime.datetime.now()
             print(now.strftime(f"{Fore.MAGENTA}[RECHECK] {Style.RESET_ALL}%H:%M:%S {mod}, {exc}"))
-            await asyncio. sleep(5) 
-            try:
-                await CheckOne(mod,i)
-                now = datetime.datetime.now()
-                print(now.strftime(f"{Fore.MAGENTA}[CHECKED] {Style.RESET_ALL}%H:%M:%S {mod}"))
-            except Exception as exc:
-                now = datetime.datetime.now()
-                print(now.strftime(f"{Fore.MAGENTA}[ERROR] {Style.RESET_ALL}%H:%M:%S {mod}, {exc}"))
-                await err(mod[0])
-        i = i+1
+            await asyncio. sleep(rdelay)
+            for x in range(cretry):
+                try:
+                    await CheckOne(mod,i)
+                    now = datetime.datetime.now()
+                    print(now.strftime(f"{Fore.MAGENTA}[EXCHECKED] {Style.RESET_ALL}%H:%M:%S {mod}"))
+                    break
+                except Exception as exc:
+                    now = datetime.datetime.now()
+                    print(now.strftime(f"{Fore.MAGENTA}[ERROR] {Style.RESET_ALL}%H:%M:%S {mod}, {exc}"))
+                    if x is cretry-1:
+                        await err(mod[0])
     now = datetime.datetime.now()
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] End {Style.RESET_ALL}%H:%M:%S"))
     if oup is True:
@@ -106,24 +112,45 @@ def CollectionToConfig(id):
 class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         # create the background task and run it in the background
         self.bg_task = self.loop.create_task(self.my_background_task(event))
 
+    async def on_disconnect(self):
+        now = datetime.datetime.now()
+        print(now.strftime(f"{Fore.MAGENTA}[DISCONNECTED] {Style.RESET_ALL}%H:%M:%S "))
+
+    async def on_resumed(self):
+        now = datetime.datetime.now()
+        print(now.strftime(f"{Fore.MAGENTA}[RESUME] {Style.RESET_ALL}%H:%M:%S "))
+
+    async def on_ready(self):
+        x = status
+        if x is None:
+            x = "git.urek.eu | $help"
+        print(x)
+        await bot.change_presence(activity=nextcord.Game(name=x))
+        now = datetime.datetime.now()
+        print(now.strftime(f'{Fore.MAGENTA}[INFO] %H:%M:%S {Fore.RED}{bot.user}{Style.RESET_ALL} has connected to nextcord!'))
 
     async def my_background_task(self,LA):
         await self.wait_until_ready()
-        channel = self.get_channel(where) 
         while not self.is_closed():
-            while event.is_set():
-                await channel.send("Command is still running delaying check for 5 seconds..")
-                await asyncio.sleep(5)
-            event.set()
-            await channel.send("Checking for updates!")
-            await Monitor()
-            await channel.send("Checking finished sleeping...")
-            event.clear()
-            await asyncio.sleep(ctime) 
+            try:
+                channel = self.get_channel(where) 
+                while event.is_set():
+                    await channel.send("Command is still running delaying check for 5 seconds..")
+                    await asyncio.sleep(5)
+                event.set()
+                await channel.send("Checking for updates!")
+                await Monitor()
+                await channel.send("Checking finished sleeping...")
+                await asyncio.sleep(ctime) 
+            except:
+                event.clear() 
+                now = datetime.datetime.now()
+                print(now.strftime(f"{Fore.MAGENTA}[STOP] {Style.RESET_ALL}%H:%M:%S An error has accured current monitor cycle skipped!"))
+                await asyncio.sleep(fdelay) 
+            event.clear() 
 
 bot = Bot(command_prefix='$')
 bot.remove_command('help')
@@ -179,10 +206,6 @@ async def remove(ctx,arg):
             event.clear()
         else:
             await ctx.send("Wait until update check finishes!")        
-
-@bot.event
-async def on_ready():
-    print(f'{Fore.MAGENTA}[INFO] {Fore.RED}{bot.user}{Style.RESET_ALL} has connected to nextcord!')
 
 @bot.command()
 @commands.check_any(commands.is_owner())
@@ -251,4 +274,4 @@ if collectionid is not None:
     except:
         print(f"{Fore.MAGENTA}[Fill] Error filling collection")
 
-bot.run(TOKEN)
+bot.run(TOKEN,reconnect=True)
