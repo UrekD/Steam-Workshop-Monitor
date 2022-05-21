@@ -46,6 +46,9 @@ services:
       - cname=workshop #channel name where it responds to commands
       - collectionid=1332156191 #workshop collection id found in url
       - cdelay=1 #delay between each mods checked in seconds
+	  - rdelay=5 #delay on recheck in seconds
+      - cretry=3 #how many times to retry the recheck mod
+      - fdelay=300 #how many seconds to wait until monitor runs again after failure ex. on internet failure
     volumes:
       - botdataa:/data
       

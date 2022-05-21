@@ -1,4 +1,4 @@
-#Source https://github.com/UrekD/Steam-Workshop-Monitor
+#Source https://git.urek.eu
 import asyncio
 from colorama import Fore, Style
 import datetime
@@ -127,7 +127,6 @@ class Bot(commands.Bot):
         x = status
         if x is None:
             x = "git.urek.eu | $help"
-        print(x)
         await bot.change_presence(activity=nextcord.Game(name=x))
         now = datetime.datetime.now()
         print(now.strftime(f'{Fore.MAGENTA}[INFO] %H:%M:%S {Fore.RED}{bot.user}{Style.RESET_ALL} has connected to nextcord!'))
@@ -144,13 +143,13 @@ class Bot(commands.Bot):
                 await channel.send("Checking for updates!")
                 await Monitor()
                 await channel.send("Checking finished sleeping...")
-                await asyncio.sleep(ctime) 
+                event.clear()  
+                await asyncio.sleep(ctime)
             except:
                 event.clear() 
                 now = datetime.datetime.now()
                 print(now.strftime(f"{Fore.MAGENTA}[STOP] {Style.RESET_ALL}%H:%M:%S An error has accured current monitor cycle skipped!"))
                 await asyncio.sleep(fdelay) 
-            event.clear() 
 
 bot = Bot(command_prefix='$')
 bot.remove_command('help')
