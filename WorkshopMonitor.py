@@ -64,7 +64,7 @@ async def Monitor():
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] End {Style.RESET_ALL}%H:%M:%S"))
     if oup is True:
         async with aiofiles.open('data/config.json', mode='w') as jsfile:
-            await jsfile.write(json.dumps(config))
+            await jsfile.write(json.dumps(config, indent=4, sort_keys=True))
 
 async def update(uid):
     channel = bot.get_channel(where)
@@ -199,7 +199,7 @@ async def remove(ctx,arg):
                 idsx.remove(arg)
                 config["userdata"]['workshopid'] = idsx
                 async with aiofiles.open('data/config.json', mode='w') as jsfile:
-                    await jsfile.write(json.dumps(config))
+                    await jsfile.write(json.dumps(config, indent=4, sort_keys=True))
                 await ctx.send(f"Removed element {arg}")
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
@@ -222,7 +222,7 @@ async def clear(ctx):
                 d = [] 
                 config["userdata"]['workshopid'] = d
                 async with aiofiles.open('data/config.json', mode='w') as jsfile:
-                    await jsfile.write(json.dumps(config))
+                    await jsfile.write(json.dumps(config, indent=4, sort_keys=True))
                 await ctx.send("Cleared the config")
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
@@ -240,7 +240,7 @@ async def add(ctx,arg):
                 idsx.append(arg)
                 config["userdata"]['workshopid'] = idsx
                 async with aiofiles.open('data/config.json', mode='w') as jsfile:
-                    await jsfile.write(json.dumps(config))
+                    await jsfile.write(json.dumps(config, indent=4, sort_keys=True))
                 await ctx.send(f"Added element {arg}")
             except Exception as exc:
                 await ctx.send(f"Error has accured {exc}")
