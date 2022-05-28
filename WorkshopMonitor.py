@@ -59,6 +59,7 @@ async def Monitor():
                     print(now.strftime(f"{Fore.MAGENTA}[ERROR] {Style.RESET_ALL}%H:%M:%S {mod}, {exc}"))
                     if x is cretry-1:
                         await err(mod[0])
+        i=i+1
     now = datetime.datetime.now()
     print (now.strftime(f"{Fore.MAGENTA}[Monitor] End {Style.RESET_ALL}%H:%M:%S"))
     if oup is True:
