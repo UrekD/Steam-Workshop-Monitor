@@ -6,7 +6,6 @@ import json
 import httpx
 import aiofiles
 import os
-import math
 import nextcord
 from nextcord.ext import commands, menus
 from nextcord import Interaction, SlashOption, ChannelType
@@ -188,10 +187,15 @@ async def list(interaction: nextcord.Interaction):
             with open('data/config.json', "rb") as infile:
                 config = json.load(infile)
                 data = config["userdata"].get('workshopid')
-            data = [f'{mods[num]} #{num}' for num in range(1, len(mods))]
+            leng = len(data)
+            t = 30
+            if leng > 75:
+                t = t * (leng/50)
+            data = [f'{data[num]} #{num}' for num in range(0,leng)]
             pages = menus.ButtonMenuPages(
                         source=MyEmbedDescriptionPageSource(data),
-                        disable_buttons_after=True,
+                        clear_buttons_after=True,
+                        timeout=t
                     )
             await pages.start(interaction=interaction)
             event.clear()
