@@ -43,10 +43,9 @@ services:
       - where=935678087209856 #channel ID to send notification
       - nrole=9124604480608221 #role id to ping on notify
       - ctime=900 #time between checks in seconds
-      - cname=workshop #channel name where it responds to commands
       - collectionid=1332156191 #workshop collection id found in url
       - cdelay=1 #delay between each mods checked in seconds
-	  - rdelay=5 #delay on recheck in seconds
+      - rdelay=5 #delay on recheck in seconds
       - cretry=3 #how many times to retry the recheck mod
       - fdelay=300 #how many seconds to wait until monitor runs again after failure ex. on internet failure
     volumes:
@@ -59,41 +58,10 @@ volumes:
   botdataa:
 
 # Commands
-**$ping**
+Integrated with Discord Slash commands!
 
-![image](https://user-images.githubusercontent.com/38784343/140180871-9647cb59-8bdd-4af5-bccf-f7864e572628.png)
+![image](https://user-images.githubusercontent.com/38784343/172271297-94e52c55-05b8-4860-ad5d-cdd5c7506d00.png)
 
-**$list**
-
-Returns a list of mods in a JSON object, format 'MODID#TIME'.
-Time format is in Unix epoch time https://www.epochconverter.com/
-
-![image](https://user-images.githubusercontent.com/38784343/140181008-43802124-4154-461f-ad78-50a2a69f9425.png)
-
-**$remove**
-
-Firstly locate the mod via the ID and copy the whole format and remove it via the command.
-
-![image](https://user-images.githubusercontent.com/38784343/140181570-7d4b4d49-3468-4919-9571-febe9ccd0ad8.png)
-
-**$add**
-
-Add the mod with the following format MODID#000 ex. "$add 450814997#000"
-If you use 000 it should not trigger a update notification.
-
-![image](https://user-images.githubusercontent.com/38784343/140181637-731a1a32-6538-406e-8fcc-0e5eb925c143.png)
-
-**$clear**
-
-Removes all mods from the config.
-
-![image](https://user-images.githubusercontent.com/38784343/168385393-bf913d4a-b755-4a8f-b0bc-7228f1c09bb6.png)
-
-**$refill**
-
-Overwrites the config with the mods in workshop collection.
-
-![image](https://user-images.githubusercontent.com/38784343/168385478-0656d059-3053-4be8-b769-4731daac4c20.png)
 
 # Example
 
