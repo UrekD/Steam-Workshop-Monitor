@@ -6,13 +6,13 @@ import json
 import httpx
 import aiofiles
 import os
-import numpy as np
 import math
 import nextcord
-from nextcord.ext import commands
+from nextcord.ext import commands, menus
 from nextcord import Interaction, SlashOption, ChannelType
 import nextcord
 from dotenv import load_dotenv
+from nextcord import Embed
 
 load_dotenv()
 
@@ -170,7 +170,16 @@ async def help(interaction: nextcord.Interaction):
     embed.add_field(name="/fcheck", value="Force a check cycle indepentent of the interval.Force a check cycle indepentent of the interval", inline=False)
     embed.add_field(name="/refill workshopid", value="Overwrites the config with the mods in workshop collection. ex, /refill 1332156191", inline=False)
     await interaction.response.send_message(embed=embed)
+    
+class MyEmbedDescriptionPageSource(menus.ListPageSource):
+    def __init__(self, data):
+        super().__init__(data, per_page=25)
 
+    async def format_page(self, menu, entries):
+        embed = Embed(title="Mods", description="\n".join(entries))
+        embed.set_footer(text=f'Page {menu.current_page + 1}/{self.get_max_pages()}')
+        return embed
+        
 @bot.slash_command(name="list", description="Lists all mods from current config.")
 async def list(interaction: nextcord.Interaction):
    if event.is_set() is False:
@@ -178,10 +187,13 @@ async def list(interaction: nextcord.Interaction):
             event.set()
             with open('data/config.json', "rb") as infile:
                 config = json.load(infile)
-                mods = config["userdata"].get('workshopid')
-                c=math.ceil(len(mods)/80)
-            for mod in np.array_split(mods, c):
-                await interaction.response.send_message(mod)
+                data = config["userdata"].get('workshopid')
+            data = [f'{mods[num]} #{num}' for num in range(1, len(mods))]
+            pages = menus.ButtonMenuPages(
+                        source=MyEmbedDescriptionPageSource(data),
+                        disable_buttons_after=True,
+                    )
+            await pages.start(interaction=interaction)
             event.clear()
         except:
             event.clear()
