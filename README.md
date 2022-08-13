@@ -14,5 +14,5 @@ Integrated with Discord Slash commands!
 
 # Self Hosting
 
-Latest version is not avaliable for self hosting. If you wish to self host you can use the old build which only supports 1 guild, see ![OLD-README.md](OLD-README.md)
+Latest version is not avaliable for self hosting. If you wish to self host you can use the old build which only supports 1 guild, see [OLD-README.md](OLD-README.md)
 
