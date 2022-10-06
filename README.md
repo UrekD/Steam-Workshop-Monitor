@@ -1,5 +1,5 @@
 # Steam-Workshop-Monitor
-Discord bot for monitoring Steam Workshop items and be notified when they get updated. [Official Discord Server.](https://discord.gg/tSZmkdXnYv)<br>
+Discord bot for monitoring Steam Workshop items and be notified when they get updated. [Official Discord Server.](https://discord.gg/tSZmkdXnYv)<br><br>[![Top Langs](https://github.com/UrekD/UrekD/blob/wbstats/stats.png)](https://discord.com/api/oauth2/authorize?client_id=752213037079068832&permissions=8&scope=applications.commands%20bot)
 <br>Click here to [Invite](https://discord.com/api/oauth2/authorize?client_id=752213037079068832&permissions=8&scope=applications.commands%20bot) the bot to your guild. Upon joining the bot will create a channel and role called workshop, where it will send the update notifications and any announcements about the bot. The role and channel can be freely renamed but not deleted. If they have been deleted you must kick and invite the bot again which will reset everything including your watched items. 
 # Commands
 Integrated with Discord Slash commands!
