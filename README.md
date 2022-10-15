@@ -18,5 +18,21 @@ Integrated with Discord Slash commands!
 
 # Self Hosting
 
-Latest version is not avaliable for self hosting. If you wish to self host you can use the old build which only supports 1 guild, see [OLD-README.md](OLD-README.md)
+**Docker Compose**
 
+```docker
+version: "3"
+services:
+  workshopmonitor:
+    image: ghcr.io/urekd/steam-workshop-monitor:main
+    environment:
+      - TOKEN=fmSUjZKW.To)v<eDw_8VZG<Pik#yN #bot token
+      - where=935678087209856 #channel ID to send notification
+      - nrole=9124604480608221 #role id to ping on notify
+      - ctime=900 #time between checks in seconds
+      - collectionid=1332156191 #workshop collection id found in url
+      - cdelay=1 #delay between each mods checked in seconds
+      - rdelay=5 #delay on recheck in seconds
+      - cretry=3 #how many times to retry the recheck mod
+      - fdelay=300 #how many seconds to wait until monitor runs again after failure ex. on internet failure
+```
