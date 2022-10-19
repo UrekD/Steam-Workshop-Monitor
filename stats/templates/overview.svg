@@ -1,0 +1,110 @@
+<svg id="gh-dark-mode-only" width="300" height="160" xmlns="http://www.w3.org/2000/svg">
+<style>
+svg {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+#background {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  fill: white;
+  stroke: rgb(225, 228, 232);
+  stroke-width: 1px;
+  rx: 6px;
+  ry: 6px;
+}
+
+#gh-dark-mode-only:target #background {
+  fill: #0d1117;
+  stroke-width: 0.5px;
+}
+
+foreignObject {
+  width: calc(100% - 10px - 32px);
+  height: calc(100% - 10px - 32px);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+th {
+  padding: 0.5em;
+  padding-top: 0;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(3, 102, 214);
+}
+
+#gh-dark-mode-only:target th {
+  color: #58a6ff;
+}
+
+td {
+  margin-bottom: 16px;
+  margin-top: 8px;
+  padding: 0.25em;
+  font-size: 12px;
+  line-height: 18px;
+  color: rgb(88, 96, 105);
+}
+
+#gh-dark-mode-only:target td {
+  color: #c9d1d9;
+}
+
+tr {
+  transform: translateX(-200%);
+  animation: slideIn 2s ease-in-out forwards;
+}
+
+.octicon {
+  fill: rgb(88, 96, 105);
+  margin-right: 1ch;
+  vertical-align: top;
+}
+
+#gh-dark-mode-only:target .octicon {
+  fill: #8b949e;
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateX(0);
+  }
+}
+</style>
+<g>
+<rect x="5" y="5" id="background" />
+<g>
+<foreignObject x="21" y="21" width="318" height="168">
+<div xmlns="http://www.w3.org/1999/xhtml">
+
+<table>
+<thead><tr style="transform: translateX(0);">
+<th colspan="2">Workshop Monitor Stats {{ name }}</th>
+</tr></thead>
+<tbody>
+
+<tr><td><svg class="octicon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg>Servers/Guilds count</td><td>{{ stars }}</td></tr>
+
+<tr style="animation-delay: 150ms"><td><svg class="octicon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16" role="img"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"></path></svg>Unique items monitored</td><td>{{ forks }}</td></tr>
+
+<tr style="animation-delay: 300ms"><td><svg class="octicon" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M1 2.5A2.5 2.5 0 013.5 0h8.75a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V1.5h-8a1 1 0 00-1 1v6.708A2.492 2.492 0 013.5 9h3.25a.75.75 0 010 1.5H3.5a1 1 0 100 2h5.75a.75.75 0 010 1.5H3.5A2.5 2.5 0 011 11.5v-9zm13.23 7.79a.75.75 0 001.06-1.06l-2.505-2.505a.75.75 0 00-1.06 0L9.22 9.229a.75.75 0 001.06 1.061l1.225-1.224v6.184a.75.75 0 001.5 0V9.066l1.224 1.224z"></path></svg>Total monitored</td><td>{{ contributions }}</td></tr>
+
+<tr style="animation-delay: 450ms"><td><svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M8.75 1.75a.75.75 0 00-1.5 0V5H4a.75.75 0 000 1.5h3.25v3.25a.75.75 0 001.5 0V6.5H12A.75.75 0 0012 5H8.75V1.75zM4 13a.75.75 0 000 1.5h8a.75.75 0 100-1.5H4z"></path></svg>Average total check time</td><td>{{ lines_changed }}</td></tr>
+
+
+</tbody>
+</table>
+
+</div>
+</foreignObject>
+</g>
+</g>
+</svg>
