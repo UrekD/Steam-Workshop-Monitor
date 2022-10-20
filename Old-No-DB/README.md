@@ -37,7 +37,7 @@ After mounting the volume you can also edit it manually with a text editor on th
 version: "3"
 services:
   workshopmonitor:
-    image: ghcr.io/urekd/steam-workshop-monitor:main
+    image: look at from https://github.com/UrekD/Steam-Workshop-Monitor/pkgs/container/steam-workshop-monitor/34820545?tag=main
     environment:
       - TOKEN=fmSUjZKW.To)v<eDw_8VZG<Pik#yN #bot token
       - where=935678087209856 #channel ID to send notification

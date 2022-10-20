@@ -1,0 +1,67 @@
+kind: pipeline
+type: docker
+name: build
+steps:
+  - name: publish
+    image: plugins/docker
+    settings:
+      username: 
+        from_secret: docker_username
+      password: 
+        from_secret: docker_password
+      repo: tea.urek.eu/urek/steam-workshop-monitor
+      cache_from: tea.urek.eu/urek/steam-workshop-monitor:latest
+      registry: tea.urek.eu
+      tags: latest
+trigger:
+  branch:
+    - main
+  event:
+    - push
+    - custom
+---
+ 
+ 
+kind: pipeline
+name: portainer update
+steps:
+  - name: send
+    image: plugins/webhook
+    settings:
+      urls: 
+        from_secret: portainer_hook
+trigger:
+  branch:
+    - main
+  status:
+    - success
+    - custom
+depends_on:
+  - build
+---
+
+kind: pipeline
+name: notify webhook
+steps:
+  - name: discord notification
+    image: appleboy/drone-discord
+    settings:
+      webhook_id: 
+        from_secret: webhook_id
+      webhook_token: 
+        from_secret: webhook_token
+      message: >
+        {{#success build.status}}
+          build {{build.number}} succeeded. Good job.
+        {{else}}
+          build {{build.number}} failed. Fix me please.
+        {{/success}}
+trigger:
+  branch:
+    - main
+  status:
+    - success
+    - failure
+    - custom
+depends_on:
+  - build
