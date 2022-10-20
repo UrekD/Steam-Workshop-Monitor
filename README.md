@@ -53,7 +53,7 @@ services:
       - ctime=300 #Check interval in seconds
       - fdelay=120 #Run delay on monitor fail (ex. API is down)
       - chdebug=1234 (Channel where to send logs/debug to)
-	  - mincount=1 #Minimum count for mods Used in cleanup
+      - mincount=1 #Minimum count for mods Used in cleanup
     restart: unless-stopped
 ```
 # Personal note
