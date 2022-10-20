@@ -17,7 +17,7 @@ idna==3.3
 multidict==6.0.2
 nextcord==2.0.0b3
 nextcord-ext-menus==1.5.3
-protobuf==3.19.3
+protobuf==3.19.5
 pytz==2021.3
 rfc3986==1.5.0
 sniffio==1.2.0
