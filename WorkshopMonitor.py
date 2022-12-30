@@ -338,7 +338,7 @@ async def on_application_command_error(inter: nextcord.Interaction, error):
     else:
         await Log('EXCEPTION CMD',error.args)
 
-@bot.slash_command(name="help", description="help", default_member_permissions=slashperms)
+@bot.slash_command(name="whelp", description="help", default_member_permissions=slashperms)
 @cooldown(ccount, cdtime, bucket=SlashBucket.guild)
 @cooldown(2, cdtime, bucket=CooldownBucket.kwargs)
 async def help(interaction: nextcord.Interaction):
@@ -364,7 +364,7 @@ async def help(interaction: nextcord.Interaction):
     await interaction.response.send_message(embed=embed)
 
 
-@bot.slash_command(name="info", description="Get remaining mod quota for this guild", default_member_permissions=slashperms)
+@bot.slash_command(name="winfo", description="Get remaining mod quota for this guild", default_member_permissions=slashperms)
 @cooldown(ccount, cdtime, bucket=SlashBucket.guild)
 @cooldown(2, cdtime, bucket=CooldownBucket.kwargs)
 async def xinfo(interaction: nextcord.Interaction):
@@ -382,7 +382,7 @@ async def xinfo(interaction: nextcord.Interaction):
         await Log('EXCEPTION xinfo',x.args)
         return
 
-@bot.slash_command(name="time", description="Get time of last check loop", default_member_permissions=slashperms)
+@bot.slash_command(name="wtime", description="Get time of last check loop", default_member_permissions=slashperms)
 @cooldown(ccount, cdtime, bucket=SlashBucket.guild)
 @cooldown(2, cdtime, bucket=CooldownBucket.kwargs)
 async def ttime(interaction: nextcord.Interaction):
@@ -392,14 +392,14 @@ async def ttime(interaction: nextcord.Interaction):
         await interaction.response.send_message(f"{round(runtime,2)} seconds | <t:{start_clock}:R>")
     
 # Force fill all data from MySQL to Redis
-@bot.slash_command(name="rfill", description="MYSQL TO REDIS", default_member_permissions=slashperms, guild_ids = servers)
+@bot.slash_command(name="wafill", description="MYSQL TO REDIS", default_member_permissions=slashperms, guild_ids = servers)
 async def rfill(interaction: nextcord.Interaction):
     await interaction.response.defer()
     await FillRedis()
     await interaction.followup.send("Done!", ephemeral=True)
 
 # Admin command for increasing mod quota
-@bot.slash_command(name="acount", description="Increase guild quota", default_member_permissions=slashperms, guild_ids = servers)
+@bot.slash_command(name="wacount", description="Increase guild quota", default_member_permissions=slashperms, guild_ids = servers)
 async def acount(interaction: nextcord.Interaction, srvr: str, arg: str):
     await interaction.response.defer()
     try:
@@ -413,7 +413,7 @@ async def acount(interaction: nextcord.Interaction, srvr: str, arg: str):
     await interaction.followup.send("Done!")
 
 # Admin command for setting channel ID for guild manually
-@bot.slash_command(name="ach", description="Set Channel", default_member_permissions=slashperms, guild_ids = servers)
+@bot.slash_command(name="wach", description="Set Channel", default_member_permissions=slashperms, guild_ids = servers)
 async def ach(interaction: nextcord.Interaction, srvr: str, arg: str):
     await interaction.response.defer()
     try:
@@ -427,7 +427,7 @@ async def ach(interaction: nextcord.Interaction, srvr: str, arg: str):
     await interaction.followup.send("Done!")
 
 # Admin command for setting role ID for guild manually
-@bot.slash_command(name="arole", description="Set Role", default_member_permissions=slashperms, guild_ids = servers)
+@bot.slash_command(name="warole", description="Set Role", default_member_permissions=slashperms, guild_ids = servers)
 async def arole(interaction: nextcord.Interaction, srvr: str, arg: str):
     await interaction.response.defer()
     try:
@@ -441,7 +441,7 @@ async def arole(interaction: nextcord.Interaction, srvr: str, arg: str):
     await interaction.followup.send("Done!")
 
 # Admin command for getting quota for guild by ID
-@bot.slash_command(name="ainfo", description="Get remaining mod quota for this guild", default_member_permissions=slashperms, guild_ids = servers)
+@bot.slash_command(name="wainfo", description="Get remaining mod quota for this guild", default_member_permissions=slashperms, guild_ids = servers)
 async def ainfo(interaction: nextcord.Interaction, arg: str):
     await interaction.response.defer()
     try:
@@ -458,7 +458,7 @@ async def ainfo(interaction: nextcord.Interaction, arg: str):
         return
 
 # Debug cmd to get hosts usage CPU and RAM
-@bot.slash_command(name="threadds", description="Monitor time and when it last ran", default_member_permissions=slashperms, guild_ids = servers)
+@bot.slash_command(name="wthreadds", description="Monitor time and when it last ran", default_member_permissions=slashperms, guild_ids = servers)
 @cooldown(ccount, cdtime, bucket=SlashBucket.guild)
 @cooldown(2, cdtime, bucket=CooldownBucket.kwargs)
 async def threadds(interaction: nextcord.Interaction):
@@ -468,7 +468,7 @@ async def threadds(interaction: nextcord.Interaction):
         th.append(thread.name)
     await interaction.followup.send((th,'RAM memory % used:', psutil.virtual_memory()[2],' The CPU usage is: ', psutil.cpu_percent(4)))
 
-@bot.slash_command(name="list", description="Lists all mods monitored by this Guild!", default_member_permissions=slashperms)#, guild_ids = servers)
+@bot.slash_command(name="wlist", description="Lists all mods monitored by this Guild!", default_member_permissions=slashperms)#, guild_ids = servers)
 @cooldown(ccount, cdtime, bucket=SlashBucket.guild)
 @cooldown(2, cdtime, bucket=CooldownBucket.kwargs)
 async def listx(interaction: nextcord.Interaction):
@@ -492,13 +492,13 @@ async def listx(interaction: nextcord.Interaction):
             await interaction.followup.send("Error")
 
 @bot.slash_command(
-    name="add",
+    name="wadd",
     description="Add a Steam Workshop Item by it's ID!", default_member_permissions=slashperms)
 @cooldown(ccount, cdtime, bucket=SlashBucket.guild)
 @cooldown(2, cdtime, bucket=CooldownBucket.kwargs)
 async def add(interaction: nextcord.Interaction, arg: int):
     await interaction.response.defer() # Defer response to avoid timeout
-    await Log('Add',f'{arg} {interaction.guild.id}')
+    await Log('Add',f'{interaction.guild.id} {arg}')
     x = await CheckOne(arg) # Get item data from Steam API
     if x['result']!=9 and x!=None: # Check that it does not returs 9 (item not found) and not None
         try:
@@ -523,17 +523,17 @@ async def add(interaction: nextcord.Interaction, arg: int):
                     tn = '%s&%s'%(interaction.guild.id,arg)
                     cc.hset(tn,'n', '0')
                     cc.expire(tn, ttltime)
-                    await interaction.followup.send("Mod added!")
+                    await interaction.followup.send(f"{arg} added!")
                 else:
-                    await interaction.followup.send("Mod already added!")
+                    await interaction.followup.send(f"{arg} already added!")
         except Exception as x:
             print(x.args)
             await interaction.followup.send("Database not responding!")
     else:
-        await interaction.followup.send("Item doesn't exist!")
+        await interaction.followup.send(f"{arg} doesn't exist!")
 
 @bot.slash_command(
-    name="remove",
+    name="wremove",
     description="Remove a Steam Workshop Item by it's ID!", default_member_permissions=slashperms#,guild_ids = servers
 )
 @cooldown(ccount, cdtime, bucket=SlashBucket.guild)
@@ -551,10 +551,10 @@ async def remove(interaction: nextcord.Interaction, arg: int):
                     cursor.execute(f"UPDATE guilds SET Count=COUNT+1 WHERE  GuildID={interaction.guild.id}") # Should really use a trigger or a procedure...
                     cc.hincrby(interaction.guild.id,'Count', 1) # Update redis
                     await DeleteKey('%s&%s'%(interaction.guild.id,arg)) # Delete redis key for this mod
-                    await interaction.followup.send("Mod removed!")
+                    await interaction.followup.send(f"{arg} removed!")
                 except Exception as x:
                     print(x.args)
-                    await interaction.followup.send("Error removing") 
+                    await interaction.followup.send(f"Error removing {arg}") 
             else:
                 await interaction.followup.send(f"Not monitoring {arg}!")                 
     except Exception as x:
