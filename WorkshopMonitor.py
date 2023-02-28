@@ -355,12 +355,12 @@ async def help(interaction: nextcord.Interaction):
     embed.set_thumbnail(
         url="https://icons.iconarchive.com/icons/icons8/windows-8/512/Logos-Steam-icon.png"
     )
-    embed.add_field(name="/add", value="Add Workshop item by ID", inline=False)
-    embed.add_field(name="/remove", value="Add Workshop item by ID", inline=False)
-    embed.add_field(name="/list", value="List all items monitored by this guild", inline=False)
-    embed.add_field(name="/time", value="Get time of last check loop", inline=False)
-    embed.add_field(name="/info", value="Get remaining mod quota for this guild", inline=False)
-    embed.add_field(name="/help", value="Get this help", inline=False)
+    embed.add_field(name="/wadd", value="Add Workshop item by ID", inline=False)
+    embed.add_field(name="/wremove", value="Add Workshop item by ID", inline=False)
+    embed.add_field(name="/wlist", value="List all items monitored by this guild", inline=False)
+    embed.add_field(name="/wtime", value="Get time of last check loop", inline=False)
+    embed.add_field(name="/winfo", value="Get remaining mod quota for this guild", inline=False)
+    embed.add_field(name="/whelp", value="Get this help", inline=False)
     await interaction.response.send_message(embed=embed)
 
 
