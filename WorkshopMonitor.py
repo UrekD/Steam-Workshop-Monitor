@@ -414,7 +414,7 @@ async def ch(interaction: nextcord.Interaction, arg: str):
     await interaction.followup.send("Done!")
 
 @bot.slash_command(name="wrole", description="Set Role", default_member_permissions=slashperms)
-async def role(interaction: nextcord.Interaction, srvr: str, arg: str):
+async def role(interaction: nextcord.Interaction, arg: str):
     await interaction.response.defer()
     try:
         with get_connection() as (cursor):
