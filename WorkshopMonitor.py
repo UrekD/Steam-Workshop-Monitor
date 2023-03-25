@@ -360,6 +360,8 @@ async def help(interaction: nextcord.Interaction):
     embed.add_field(name="/wlist", value="List all items monitored by this guild", inline=False)
     embed.add_field(name="/wtime", value="Get time of last check loop", inline=False)
     embed.add_field(name="/winfo", value="Get remaining mod quota for this guild", inline=False)
+    embed.add_field(name="/wch", value="Change channel for notifications", inline=False)
+    embed.add_field(name="/wrole", value="Change role for notifications", inline=False)
     embed.add_field(name="/whelp", value="Get this help", inline=False)
     await interaction.response.send_message(embed=embed)
 
@@ -398,6 +400,32 @@ async def rfill(interaction: nextcord.Interaction):
     await FillRedis()
     await interaction.followup.send("Done!", ephemeral=True)
 
+@bot.slash_command(name="wch", description="Set Channel", default_member_permissions=slashperms)
+async def ch(interaction: nextcord.Interaction, arg: str):
+    await interaction.response.defer()
+    try:
+        with get_connection() as (cursor):
+            cursor.execute(f"UPDATE guilds SET ChID={int(arg)} WHERE  GuildID={int(interaction.guild.id)}")
+        await DeleteKey(interaction.guild.id) #delete key from redis
+    except Exception as x:
+        await interaction.followup.send("Error has accured :(")
+        await Log('EXCEPTION ach',x.args)
+        return
+    await interaction.followup.send("Done!")
+
+@bot.slash_command(name="wrole", description="Set Role", default_member_permissions=slashperms)
+async def role(interaction: nextcord.Interaction, srvr: str, arg: str):
+    await interaction.response.defer()
+    try:
+        with get_connection() as (cursor):
+            cursor.execute(f"UPDATE guilds SET RID={int(arg)} WHERE  GuildID={int(interaction.guild.id)}")
+        await DeleteKey(interaction.guild.id) #delete key from redis
+    except Exception as x:
+        await interaction.followup.send("Error has accured :(")
+        await Log('EXCEPTION arole',x.args)
+        return
+    await interaction.followup.send("Done!")
+    
 # Admin command for increasing mod quota
 @bot.slash_command(name="wacount", description="Increase guild quota", default_member_permissions=slashperms, guild_ids = servers)
 async def acount(interaction: nextcord.Interaction, srvr: str, arg: str):
