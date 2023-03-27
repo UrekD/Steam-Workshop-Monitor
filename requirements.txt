@@ -7,7 +7,7 @@ SQLAlchemy==1.4.37
 async-timeout==4.0.2
 asyncio==3.4.3
 mysql-connector-python==8.0.28
-redis==4.3.3
+redis==4.5.3
 pytz==2022.1
 psutil==5.9.1
 function-cooldowns==1.4.0
