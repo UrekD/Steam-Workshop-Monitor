@@ -56,7 +56,7 @@ servers = [775414312734425098,988801776612409415]
 runtime = None
 #Connection for reddis and mysql
 rpool = redis.BlockingConnectionPool(username= RUSER, password=RPASS,host=RHOST ,decode_responses=True, port=RPORT, db=int(RINDEX), max_connections=10, health_check_interval = 30)
-engine = sq.create_engine(f'mysql+mysqlconnector://{DBUSER}:{DBPASS}@{DBHOST}/{DB}', pool_size=10, max_overflow=5, poolclass=QueuePool, pool_pre_ping=True)
+engine = sq.create_engine(f'mysql+mysqlconnector://{DBUSER}:{DBPASS}@{DBHOST}/{DB}', pool_size=20, max_overflow=-1, poolclass=QueuePool, pool_pre_ping=True)
 #8 means all commands get restricted to administrators, which they can change in discord manually
 slashperms=8
 
