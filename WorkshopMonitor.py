@@ -401,11 +401,11 @@ async def rfill(interaction: nextcord.Interaction):
     await interaction.followup.send("Done!", ephemeral=True)
 
 @bot.slash_command(name="wch", description="Set Channel", default_member_permissions=slashperms)
-async def ch(interaction: nextcord.Interaction, arg: str):
+async def ch(interaction: nextcord.Interaction, arg: nextcord.TextChannel):
     await interaction.response.defer()
     try:
         with get_connection() as (cursor):
-            cursor.execute(f"UPDATE guilds SET ChID={int(arg)} WHERE  GuildID={int(interaction.guild.id)}")
+            cursor.execute(f"UPDATE guilds SET ChID={int(arg.id)} WHERE  GuildID={int(interaction.guild.id)}")
         await DeleteKey(interaction.guild.id) #delete key from redis
     except Exception as x:
         await interaction.followup.send("Error has accured :(")
@@ -414,11 +414,11 @@ async def ch(interaction: nextcord.Interaction, arg: str):
     await interaction.followup.send("Done!")
 
 @bot.slash_command(name="wrole", description="Set Role", default_member_permissions=slashperms)
-async def role(interaction: nextcord.Interaction, arg: str):
+async def role(interaction: nextcord.Interaction, arg: nextcord.Role):
     await interaction.response.defer()
     try:
         with get_connection() as (cursor):
-            cursor.execute(f"UPDATE guilds SET RID={int(arg)} WHERE  GuildID={int(interaction.guild.id)}")
+            cursor.execute(f"UPDATE guilds SET RID={int(arg.id)} WHERE  GuildID={int(interaction.guild.id)}")
         await DeleteKey(interaction.guild.id) #delete key from redis
     except Exception as x:
         await interaction.followup.send("Error has accured :(")
