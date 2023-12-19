@@ -1,6 +1,6 @@
 colorama==0.4.4
 httpx==0.23.0
-nextcord==2.2.0
+nextcord==2.6.0
 nextcord_ext_menus==1.5.3
 python-dotenv==0.20.0
 SQLAlchemy==1.4.37
