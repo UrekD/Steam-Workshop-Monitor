@@ -1,3 +1,9 @@
+# <span style="font-size:larger; color:red;">**Note: This project is archived.**</span>
+
+Due to lack of time and myself no longer using it, I'm no longer able to maintain this project. As such, it is now in a read-only state, and no further updates or maintenance will be provided.
+
+If you find this project useful and would like to fork it or take over maintenance, feel free to do so. Thank you to everyone who contributed or used this project over the years.
+
 # Steam-Workshop-Monitor
 Discord bot to notify you when your server mods get updated on the Steam workshop. 
 
